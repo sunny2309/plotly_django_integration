@@ -1,2 +1,1 @@
-# plotly_django_integration
-Integrate Plotly Charts into Django Web App
+# Integrate Plotly Charts into Django Web App
