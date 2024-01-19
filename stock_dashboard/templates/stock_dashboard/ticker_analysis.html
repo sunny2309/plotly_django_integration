@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <!--Bootstrap-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+    
+    <style>
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+    </style>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    {% load static %}
+    <div class="container mx-auto bg-dark mt-3" style="border-radius: 15px;">
+
+        <div class="row shadow-lg p-2" style="border-radius: 15px;">
+            
+            <div class="col-3 p-3 overflow-y-scroll shadow-lg bg-dark" style="border-radius: 15px; max-height: 95vh; background:linear-gradient(132deg, rgb(16, 4, 244) 0%, rgb(36, 3, 249) 0%, rgb(244, 6, 232) 100%)">
+                <h4 class="fw-bold text-center text-white">Analyze Ticker</h4>
+                {% for tkr, name in tickers %}
+                    <a href="/ticker/{{ tkr }}/">
+                        <div class="card mb-2 shadow-lg bg-dark-subtle">
+                            <div class="card-body fw-bold">{{ name }} ({{ tkr }})</div>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+
+            <div class="col-9 bg-dark text-light overflow-y-scroll" style="max-height: 95vh;">
+                <h1 class="text-center">Stock Analysis Dashboard</h1>
+                
+                <div class="row p-3">
+                    <div class="col-3">
+                        <h5 class="text-warning">{{ ticker }}</h5>
+                        <p class="text-warning">{{ name }}</p>
+                    </div>
+                    <div class="col-3">
+                        {% if "-" in change %}
+                            <h5 class="text-danger">{{ close }}</h5>
+                            <p class="text-danger fw-bold">{{ change }}&nbsp;&nbsp;&nbsp;&nbsp;{{ pct_change }}</p>
+                        {% else %}
+                            <h5 class="text-success">{{ close }}</h5>
+                            <p class="text-success fw-bold">+{{ change }}&nbsp;&nbsp;&nbsp;&nbsp;{{ pct_change }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="col-3">
+                        <h5 class="text-warning">Industry</h5>
+                        <p class="text-warning">{{ industry }}</p>
+                    </div>
+                    <div class="col-3">
+                        <h5 class="text-warning">Sector</h5>
+                        <p class="text-warning">{{ sector }}</p>
+                    </div>
+                </div>
+
+                <p class="ps-3 pe-3">{{ summary|truncatechars:500 }}</p>
+
+                <div class="card shadow-lg mb-3" style="border-radius: 15px;">
+                    <div class="card-header fw-bold text-center">{{ticker}} OHLC Chart</div>
+                    <div class="card-body">
+                        {{ chart_div | safe }}
+                    </div>
+                </div>
+
+            </div>
+        </div>  
+        
+    </div>
+</body>
+</html>
